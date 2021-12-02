@@ -3,11 +3,6 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 public class LoginScreenGUI extends javax.swing.JFrame {
-
-    /**
-     * Creates new form LoginScreenGUI
-     */
-    
     public LoginScreenGUI() {
         initComponents();
     }
@@ -98,18 +93,14 @@ public class LoginScreenGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private JOptionPane callbacks;
-    
     int attempts = 0;
-    
     String username = "";
     String password = "";
-    
     String[] UserName = {"user1", "user2",
                           "user3", "user4"};
     String[] UserPass = {"pass1", "pass2",
                           "pass3", "pass4"};
-    
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         username = usernameField.getText();
         password = passwordField.getText();
@@ -118,20 +109,24 @@ public class LoginScreenGUI extends javax.swing.JFrame {
         for(int i = 0; i < UserName.length; i++){
             if(username.equals(UserName[i]) && password.equals(UserPass[i])){
                 index = i;
-                callbacks.showMessageDialog(null, "Logged In Successfuly!");
+                JOptionPane.showMessageDialog(null, "Logged In Successfully!");
+                ListOfRecordsGUI formLists = new ListOfRecordsGUI();
+                formLists.setVisible(true);
+                formLists.pack();
+                formLists.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
                 this.setVisible(false);
-                new ListOfRecordsGUI().setVisible(true);
             }
             if (index >= 0) break;
         }
         if (index < 0) {
-            callbacks.showMessageDialog(null, "Incorrect Username / Password", "ERROR MESSAGE", callbacks.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Incorrect Username / Password", "ERROR MESSAGE", JOptionPane.WARNING_MESSAGE);
             attempts++;
             
             if (attempts >= 3){
                 this.setVisible(false);
-                int result = callbacks.showOptionDialog(null, "Sorry, you have reached the limit of 3 tries, Good Bye!", "ERROR MESSAGE", callbacks.DEFAULT_OPTION, callbacks.ERROR_MESSAGE, null,null,null);
-                if(result == callbacks.OK_OPTION){
+                int result = JOptionPane.showOptionDialog(null, "Sorry, you have reached the limit of 3 tries, Good Bye!", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+                if(result == JOptionPane.OK_OPTION){
                     System.exit(0);
                     attempts = 0;
                 }
@@ -142,7 +137,7 @@ public class LoginScreenGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

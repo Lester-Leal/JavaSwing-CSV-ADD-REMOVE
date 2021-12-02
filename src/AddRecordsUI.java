@@ -1,14 +1,11 @@
-import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 import javax.swing.JOptionPane;
 
 public class AddRecordsUI extends javax.swing.JFrame {
+    static final LocalDate today = LocalDate.now();
 
-    static DatePickerSettings settings = new DatePickerSettings();
-    
     public AddRecordsUI() {
         initComponents();
     }
@@ -23,7 +20,10 @@ public class AddRecordsUI extends javax.swing.JFrame {
         backBTN = new javax.swing.JButton();
         saveBackBTN = new javax.swing.JButton();
         saveAddBTN = new javax.swing.JButton();
-        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
+
+        DatePickerSettings settings = new DatePickerSettings();
+        settings.setFormatForDatesCommonEra(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        datePicker1 = new com.github.lgooddatepicker.components.DatePicker(settings);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -123,17 +123,14 @@ public class AddRecordsUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    static final LocalDate today = LocalDate.now();
-    static DateTimeFormatter formatters = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-    static ListOfRecordsGUI lists = new ListOfRecordsGUI();
-   
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         this.setVisible(false);
-        new ListOfRecordsGUI().setVisible(true);
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void saveAddBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAddBTNActionPerformed
 
+        String names = nameField.getText();
+
         if(nameField.getText().isEmpty()){
             JOptionPane.showOptionDialog(null, "An IllegalArgumentException, Missing Name", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else if(datePicker1.getDate().equals(today)){
@@ -141,19 +138,20 @@ public class AddRecordsUI extends javax.swing.JFrame {
         }else if(datePicker1.getDate().isAfter(today)){
             JOptionPane.showOptionDialog(null, "An IllegalArgumentException, Date Given is in the Future", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else{
-            JOptionPane.showMessageDialog(null, "Record Added Succesfully!");
+            JOptionPane.showMessageDialog(null, "Record Added Successfully!");
+
+            addToList(names);
+
             datePicker1.setDate(today);
             nameField.setText("");
-            
-            LocalDate bday = datePicker1.getDate();
-            
-            Person obj = new Person(nameField.getText(), bday);
-            
-            lists.addRecords(nameField.getText(), bday);
         }
+
     }//GEN-LAST:event_saveAddBTNActionPerformed
 
     private void saveBackBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBackBTNActionPerformed
+
+        String names = nameField.getText();
+
         if(nameField.getText().isEmpty()){
             JOptionPane.showOptionDialog(null, "An IllegalArgumentException, Missing Name", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else if(datePicker1.getDate().equals(today)){
@@ -161,17 +159,22 @@ public class AddRecordsUI extends javax.swing.JFrame {
         }else if(datePicker1.getDate().isAfter(today)){
             JOptionPane.showOptionDialog(null, "An IllegalArgumentException, Date Given is in the Future", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else{
-            JOptionPane.showMessageDialog(null, "Record Added Succesfully!");
-            this.setVisible(false);
-            new ListOfRecordsGUI().setVisible(true);
-        }
-    }//GEN-LAST:event_saveBackBTNActionPerformed
+            JOptionPane.showMessageDialog(null, "Record Added Successfully!");
 
-    public static void main(String args[]) {
-        settings.setFormatForDatesCommonEra("MM/dd/yyyy");
-        today.format(formatters);
-        datePicker1 = new DatePicker(settings);
-        
+            addToList(names);
+
+            this.setVisible(false);
+        }
+
+    }//GEN-LAST:event_saveBackBTNActionPerformed
+    public void addToList(String names){
+        Person localData = new Person(names, datePicker1.getDate());
+        long Age_year = localData.calculateAge(datePicker1.getDate(), today);
+
+        String date = localData.getBirthDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        ListOfRecordsGUI.addRecords(new Object[] {localData.getName(), date, Age_year});
+    }
+    public static void main(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -203,7 +206,7 @@ public class AddRecordsUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField nameField;
+    private static javax.swing.JTextField nameField;
     private javax.swing.JButton saveAddBTN;
     private javax.swing.JButton saveBackBTN;
     // End of variables declaration//GEN-END:variables

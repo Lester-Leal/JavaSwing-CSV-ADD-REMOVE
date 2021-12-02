@@ -1,36 +1,51 @@
 
 import java.time.LocalDate;
-import java.util.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author PC MERCHANDISE
- */
 public class Person {
     private String inputName;
     private int Age;
     private LocalDate BirthDate;
-    
-    public Person(String names, LocalDate bdate){
-        this.inputName = names;
-        this.BirthDate = bdate;
+
+    public Person() {
+        //Prevent Default Constructor
     }
-    
+
+    public Person(String name, LocalDate birthDate){
+        this.inputName = name;
+        this.BirthDate = birthDate;
+    }
+
     public String getName()
     {
-        return inputName;
+        return this.inputName;
     }
     public LocalDate getBirthDate()
     {
         return BirthDate;
     }
+
+    public int getAge(){
+        return Age;
+    }
     
     public void setName(String Value){
-        this.inputName = Value;
+        inputName = Value;
+    }
+
+    public void setBirthDate(LocalDate Value){
+        BirthDate = Value;
+    }
+
+    public void setAge(int Value){
+        Age = Value;
+    }
+
+    public long calculateAge(LocalDate start, LocalDate end){
+        long year = ChronoUnit.YEARS.between(start, end);
+        System.out.println(year);
+
+        return year;
     }
 }
