@@ -1,9 +1,14 @@
-import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.swing.*;
 import java.time.*;
 import java.util.List;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -12,7 +17,6 @@ public class ListOfRecordsGUI extends javax.swing.JFrame{
     
     //STATIC VARIABLES
     //DefaultTableModel model = new DefaultTableModel();
-    static final LocalDate today = LocalDate.now();
     boolean isAcended = false;
 
     /**
@@ -69,6 +73,11 @@ public class ListOfRecordsGUI extends javax.swing.JFrame{
         exportCSV.setBackground(new java.awt.Color(204, 204, 204));
         exportCSV.setForeground(new java.awt.Color(0, 0, 0));
         exportCSV.setText("Export to CSV File");
+        exportCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportCSVActionPerformed(evt);
+            }
+        });
 
         removeRecord.setBackground(new java.awt.Color(204, 204, 204));
         removeRecord.setForeground(new java.awt.Color(0, 0, 0));
@@ -211,34 +220,82 @@ public class ListOfRecordsGUI extends javax.swing.JFrame{
         List<RowSorter.SortKey> sortList = new ArrayList<>(25);
         dataDisplay.setRowSorter(sorter);
 
-        if (ascending.isSelected()){
-            System.out.println("Descending Selected");
+        if(isAcended){
+            if (ascending.isSelected()){
+                System.out.println("Descending Selected");
 
-            isAcended = false;
-            ascending.setSelected(false);
-            descending.setSelected(true);
+                isAcended = false;
+                ascending.setSelected(false);
+                descending.setSelected(true);
 
-            if(sortCombo.getSelectedIndex() == 0){
-                System.out.println("Name is Selected");
+                if(sortCombo.getSelectedIndex() == 0){
+                    System.out.println("Name is Selected");
 
-                sortList.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
-                sorter.setSortKeys(sortList);
+                    sortList.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+                    sorter.setSortKeys(sortList);
 
-            }else if (sortCombo.getSelectedIndex() == 1){
-                System.out.println("Birthday is Selected");
+                }else if (sortCombo.getSelectedIndex() == 1){
+                    System.out.println("Birthday is Selected");
 
-                sortList.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
-                sorter.setSortKeys(sortList);
-            }else if (sortCombo.getSelectedIndex() == 2){
-                System.out.println("Age is Selected");
+                    sortList.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+                    sorter.setSortKeys(sortList);
+                }else if (sortCombo.getSelectedIndex() == 2){
+                    System.out.println("Age is Selected");
 
-                sortList.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
-                sorter.setSortKeys(sortList);
-            }
-        }else
-            ascending.setSelected(true);
+                    sortList.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+                    sorter.setSortKeys(sortList);
+                }
+            }else
+                ascending.setSelected(true);
+        }
 
     }//GEN-LAST:event_descendingActionPerformed
+
+    private void exportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportCSVActionPerformed
+        // TODO add your handling code here:
+        final LocalDateTime today = LocalDateTime.now();
+        String basicIsoDate = today.format(DateTimeFormatter.BASIC_ISO_DATE);
+        String defaultPathName = basicIsoDate.toString() + today.getHour() + today.getMinute() + today.getSecond();
+
+        if(dataDisplay.getRowCount() == 0){
+            JOptionPane.showOptionDialog(null, "Fatal Error, There are no Rows in List Of Records!", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+        }else {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Export as CSV");
+            fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+            fileChooser.setSelectedFile(new File(defaultPathName + ".csv"));
+
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Comma-separated value file","csv"));
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if(userSelection == JFileChooser.APPROVE_OPTION){
+                File fileToSave = fileChooser.getSelectedFile();
+                String filename = fileChooser.getSelectedFile().toString();
+
+                if (!filename .endsWith(".csv"))
+                    filename += ".csv";
+
+                try {
+                    FileWriter fw = new FileWriter(fileToSave);
+                    BufferedWriter bw = new BufferedWriter(fw);
+
+                    for (int i = 0; i < dataDisplay.getRowCount(); i++) {
+                        for (int j = 0; j <  dataDisplay.getColumnCount(); j++) {
+                            bw.write(dataDisplay.getValueAt(i, j).toString()+",");
+                        }
+                        bw.newLine();
+                    }
+                    JOptionPane.showMessageDialog(this, "SUCCESSFULLY EXPORTED","INFORMATION",JOptionPane.INFORMATION_MESSAGE);
+                    bw.close();
+                    fw.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR","ERROR MESSAGE",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+
+    }//GEN-LAST:event_exportCSVActionPerformed
 
     public static void addRecords(Object[] dataRow){
         DefaultTableModel model = (DefaultTableModel) dataDisplay.getModel();
@@ -273,14 +330,14 @@ public class ListOfRecordsGUI extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRecord;
-    private static javax.swing.JRadioButton ascending;
-    private static javax.swing.JTable dataDisplay;
-    private static javax.swing.JRadioButton descending;
+    private javax.swing.JRadioButton ascending;
+    public static javax.swing.JTable dataDisplay;
+    private javax.swing.JRadioButton descending;
     private javax.swing.JButton exportCSV;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private static javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton removeRecord;
-    private static javax.swing.JComboBox<String> sortCombo;
+    private javax.swing.JComboBox<String> sortCombo;
     // End of variables declaration//GEN-END:variables
 }

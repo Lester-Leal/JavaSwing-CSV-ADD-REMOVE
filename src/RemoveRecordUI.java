@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author PC MERCHANDISE
@@ -49,11 +52,21 @@ public class RemoveRecordUI extends javax.swing.JFrame {
         removeBackBTN.setMaximumSize(new java.awt.Dimension(72, 22));
         removeBackBTN.setMinimumSize(new java.awt.Dimension(72, 22));
         removeBackBTN.setPreferredSize(new java.awt.Dimension(72, 22));
+        removeBackBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBackBTNActionPerformed(evt);
+            }
+        });
 
         saveRemoveBTN.setText("Save & Remove Another");
         saveRemoveBTN.setMaximumSize(new java.awt.Dimension(72, 22));
         saveRemoveBTN.setMinimumSize(new java.awt.Dimension(72, 22));
         saveRemoveBTN.setPreferredSize(new java.awt.Dimension(72, 22));
+        saveRemoveBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveRemoveBTNActionPerformed(evt);
+            }
+        });
 
         backBTN.setText("BACK");
         backBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -112,6 +125,52 @@ public class RemoveRecordUI extends javax.swing.JFrame {
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_backBTNActionPerformed
+
+    private void removeBackBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBackBTNActionPerformed
+        // TODO add your handling code here:
+        String Input_name = nameField.getText();
+        DefaultTableModel model = (DefaultTableModel)ListOfRecordsGUI.dataDisplay.getModel();
+
+        if(Input_name.isEmpty()){
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, Missing Name", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+        }else if (ListOfRecordsGUI.dataDisplay.getRowCount() == 0){
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, No Row found in List Of Records", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+        }else {
+            for (int row = 0; row < ListOfRecordsGUI.dataDisplay.getRowCount(); row++) {
+                if (((String) ListOfRecordsGUI.dataDisplay.getValueAt(row, 0)).equals(Input_name)) {
+                    JOptionPane.showMessageDialog(null, "Name is Exist Successfully Removed from List Of Record!");
+                    this.setVisible(false);
+                    model.removeRow(row);
+                } else {
+                    JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, Name Not Found!", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+                }
+                break;
+            }
+        }
+
+    }//GEN-LAST:event_removeBackBTNActionPerformed
+
+    private void saveRemoveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveRemoveBTNActionPerformed
+        String names = nameField.getText();
+        DefaultTableModel model = (DefaultTableModel)ListOfRecordsGUI.dataDisplay.getModel();
+
+        if(names.isEmpty()){
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, Missing Name", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+        }else if (ListOfRecordsGUI.dataDisplay.getRowCount() == 0){
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, No Row found in List Of Records", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+        }
+        else  {
+            for (int row = 0; row < ListOfRecordsGUI.dataDisplay.getRowCount(); row++){
+                if (((String)ListOfRecordsGUI.dataDisplay.getValueAt(row, 0)).equals(names)) {
+                    JOptionPane.showMessageDialog(null, "Name is Exist Successfully Removed from List Of Record!");
+                    model.removeRow(row);
+                }else {
+                    JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, Name Not Found!", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+                }
+                break;
+            }
+        }
+    }//GEN-LAST:event_saveRemoveBTNActionPerformed
 
     /**
      * @param args the command line arguments

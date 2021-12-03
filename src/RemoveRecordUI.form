@@ -113,6 +113,9 @@
           <Dimension value="[72, 22]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeBackBTNActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="saveRemoveBTN">
       <Properties>
@@ -127,6 +130,9 @@
           <Dimension value="[72, 22]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveRemoveBTNActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="backBTN">
       <Properties>

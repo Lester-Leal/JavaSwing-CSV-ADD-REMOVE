@@ -151,6 +151,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Export to CSV File"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportCSVActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="removeRecord">
       <Properties>

@@ -153,11 +153,11 @@ public class AddRecordsUI extends javax.swing.JFrame {
         String names = nameField.getText();
 
         if(nameField.getText().isEmpty()){
-            JOptionPane.showOptionDialog(null, "An IllegalArgumentException, Missing Name", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, Missing Name", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else if(datePicker1.getDate().equals(today)){
-            JOptionPane.showOptionDialog(null, "An IllegalArgumentException, You can't set your Birthdate as Date Today", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, You can't set your Birthdate as Date Today", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else if(datePicker1.getDate().isAfter(today)){
-            JOptionPane.showOptionDialog(null, "An IllegalArgumentException, Date Given is in the Future", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
+            JOptionPane.showOptionDialog(null, "An IllegalArgumentException Caught, Date Given is in the Future", "ERROR MESSAGE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,null,null);
         }else{
             JOptionPane.showMessageDialog(null, "Record Added Successfully!");
 
